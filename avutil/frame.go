@@ -99,11 +99,11 @@ func AvFrameGetSideData(f *Frame, t AvFrameSideDataType) *AvFrameSideData {
 	return (*AvFrameSideData)(C.av_frame_get_side_data((*C.struct_AVFrame)(unsafe.Pointer(f)), (C.enum_AVFrameSideDataType)(t)))
 }
 
-func Data(f *Frame) *uint8 {
-	return (*uint8)(unsafe.Pointer((*C.uint8_t)(unsafe.Pointer(&f.data))))
+func Data(f *Frame) **uint8 {
+	return (**uint8)(unsafe.Pointer((unsafe.Pointer(&f.data[0]))))
 }
-func Linesize(f *Frame) int {
-	return int(*(*C.int)(unsafe.Pointer(&f.linesize)))
+func Linesize(f *Frame) *int {
+	return (*int)(unsafe.Pointer(&f.linesize[0]))
 }
 
 // //static int get_video_buffer (Frame *frame, int align)

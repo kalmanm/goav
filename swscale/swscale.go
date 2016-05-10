@@ -61,13 +61,13 @@ func SwsIssupportedendiannessconversion(p PixelFormat) int {
 }
 
 ////Scale the image slice in srcSlice and put the resulting scaled slice in the image in dst.
-func SwsScale(ctxt *Context, src *uint8, str int, y, h int, d *uint8, ds int) int {
+func SwsScale(ctxt *Context, src **uint8, str *int, y, h int, d *uint8, ds int) int {
 	cctxt := (*C.struct_SwsContext)(unsafe.Pointer(ctxt))
-	csrc := (*C.uint8_t)(unsafe.Pointer(src))
-	cstr := (*C.int)(unsafe.Pointer(&str))
+	csrc := (**C.uint8_t)(unsafe.Pointer(src))
+	cstr := (*C.int)(unsafe.Pointer(str))
 	cd := (*C.uint8_t)(unsafe.Pointer(d))
 	cds := (*C.int)(unsafe.Pointer(&ds))
-	return int(C.sws_scale(cctxt, &csrc, cstr, C.int(y), C.int(h), &cd, cds))
+	return int(C.sws_scale(cctxt, csrc, cstr, C.int(y), C.int(h), &cd, cds))
 }
 
 func SwsSetcolorspacedetails(ctxt *Context, it *int, sr int, t *int, dr, b, c, s int) int {
